@@ -95,7 +95,7 @@ document.addEventListener('DOMContentLoaded', () => {
         episodesContainer.innerHTML = '';
         episodes.forEach((ep, idx) => {
             const date = ep.pubDate ? new Date(ep.pubDate).toLocaleDateString(lang === 'en' ? 'en-GB' : 'pt-BR') : '';
-            const desc = ep.description ? ep.description.replace(/<[^>]+>/g, '').slice(0, 180) : '';
+            const desc = ep.description ? ep.description.replace(/<[^>]+>/g, '') : '';
             const epNumLabel = lang === 'en' ? 'Episode' : 'Episódio';
             const dateLabel = lang === 'en' ? 'Published on' : 'Publicado em';
             const listenLabel = lang === 'en' ? 'Listen episode' : 'Ouvir episódio';
@@ -110,6 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <i class="fas fa-external-link-alt" style="font-size:0.9em;"></i>
                  </a>`
                 : '';
+            const descId = `desc-${idx}`;
             const html = `
                 <div class="episode-item">
                     <div class="episode-icon"><i class="fas fa-podcast"></i></div>
@@ -119,13 +120,23 @@ document.addEventListener('DOMContentLoaded', () => {
                             <span class="episode-date"><i class="far fa-calendar-alt"></i> ${dateLabel}: ${date}</span>
                         </div>
                         <div class="episode-title">${ep.title}</div>
-                        <div class="episode-desc">${desc}</div>
+                        <div class="episode-desc desc-collapsed" id="${descId}">${desc}</div>
+                        <button class="show-more-btn" data-target="${descId}">${lang === 'en' ? 'Show more' : 'Mostrar mais'}</button>
                         ${playerHtml}
                         ${fallbackBtn}
                     </div>
                 </div>
             `;
             episodesContainer.insertAdjacentHTML('beforeend', html);
+        });
+        // Add show more/less event listeners
+        episodesContainer.querySelectorAll('.show-more-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const desc = document.getElementById(this.dataset.target);
+                const expanded = desc.classList.toggle('desc-expanded');
+                desc.classList.toggle('desc-collapsed', !expanded);
+                this.textContent = expanded ? (lang === 'en' ? 'Show less' : 'Mostrar menos') : (lang === 'en' ? 'Show more' : 'Mostrar mais');
+            });
         });
     }
 

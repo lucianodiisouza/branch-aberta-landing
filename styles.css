@@ -493,12 +493,10 @@ footer {
   opacity: 0.85;
   margin-bottom: 0.2rem;
   max-width: 600px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  min-height: 2.6em;
+  overflow: visible;
+  text-overflow: initial;
+  display: block;
+  min-height: 0;
 }
 .episode-listen-btn {
   display: inline-flex;
@@ -548,8 +546,7 @@ footer {
   .episode-desc {
     font-size: 0.93rem;
     max-width: 100%;
-    -webkit-line-clamp: 3;
-    min-height: 3.9em;
+    min-height: 0;
   }
   .episode-listen-btn {
     width: 100%;
@@ -557,4 +554,35 @@ footer {
     font-size: 0.98rem;
     padding: 0.6rem 0;
   }
+}
+
+.desc-collapsed {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-height: 4.5em;
+  transition: max-height 0.2s;
+}
+.desc-expanded {
+  display: block;
+  max-height: none;
+  overflow: visible;
+  text-overflow: initial;
+}
+.show-more-btn {
+  background: none;
+  border: none;
+  color: var(--accent-color);
+  font-size: 0.98rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin: 0.2em 0 0.1em 0;
+  padding: 0;
+  text-decoration: underline;
+  transition: color 0.2s;
+}
+.show-more-btn:hover {
+  color: var(--accent-color-dark);
 } 
