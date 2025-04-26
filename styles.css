@@ -423,4 +423,44 @@ footer {
   .hero-content {
     gap: 1rem;
   }
+}
+
+.episodes-list {
+  margin-bottom: 3rem;
+}
+#episodes-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+.episode-item {
+  background: var(--card-bg);
+  border-radius: 12px;
+  padding: 1.2rem 1.5rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.episode-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--accent-color);
+  margin-bottom: 0.2rem;
+}
+.episode-date {
+  font-size: 0.95rem;
+  color: var(--text-color);
+  opacity: 0.7;
+}
+.episode-link {
+  color: var(--accent-color);
+  text-decoration: underline;
+  font-size: 1rem;
+  margin-top: 0.2rem;
+  align-self: flex-start;
+  transition: color 0.2s;
+}
+.episode-link:hover {
+  color: var(--accent-color-dark);
 } 
