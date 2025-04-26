@@ -62,6 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
             el.style.display = isEnglish ? '' : 'none';
         });
         showTypingForCurrentLang();
+        updateEpisodesLang(isEnglish ? 'en' : 'pt');
     });
 
     // Platform card click alert
@@ -77,26 +78,61 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Fetch and display podcast episodes from serverless API
     const episodesContainer = document.getElementById('episodes-container');
+    function renderEpisodes(episodes, lang) {
+        episodesContainer.innerHTML = '';
+        episodes.forEach((ep, idx) => {
+            const date = ep.pubDate ? new Date(ep.pubDate).toLocaleDateString(lang === 'en' ? 'en-GB' : 'pt-BR') : '';
+            const desc = ep.description ? ep.description.replace(/<[^>]+>/g, '').slice(0, 180) : '';
+            const epNumLabel = lang === 'en' ? 'Episode' : 'Episódio';
+            const dateLabel = lang === 'en' ? 'Published on' : 'Publicado em';
+            const listenLabel = lang === 'en' ? 'Listen episode' : 'Ouvir episódio';
+            const html = `
+                <div class="episode-item">
+                    <div class="episode-icon"><i class="fas fa-podcast"></i></div>
+                    <div class="episode-content">
+                        <div class="episode-info">
+                            <span class="episode-num">${epNumLabel} #${episodes.length - idx}</span>
+                            <span class="episode-date"><i class="far fa-calendar-alt"></i> ${dateLabel}: ${date}</span>
+                        </div>
+                        <div class="episode-title">${ep.title}</div>
+                        <div class="episode-desc">${desc}</div>
+                        <a class="episode-listen-btn" href="${ep.link}" target="_blank">
+                            <i class="fas fa-play"></i>
+                            ${listenLabel}
+                            <i class="fas fa-external-link-alt" style="font-size:0.9em;"></i>
+                        </a>
+                    </div>
+                </div>
+            `;
+            episodesContainer.insertAdjacentHTML('beforeend', html);
+        });
+    }
+
+    let loadedEpisodes = null;
+    let loadedError = false;
+
     if (episodesContainer) {
         fetch('/api/episodes')
             .then(res => res.json())
             .then(data => {
                 if (!data.episodes) throw new Error();
-                episodesContainer.innerHTML = '';
-                data.episodes.forEach(ep => {
-                    const date = ep.pubDate ? new Date(ep.pubDate).toLocaleDateString('pt-BR') : '';
-                    const html = `
-                        <div class="episode-item">
-                            <div class="episode-title">${ep.title}</div>
-                            <div class="episode-date">${date}</div>
-                            <a class="episode-link" href="${ep.link}" target="_blank">Ouvir episódio</a>
-                        </div>
-                    `;
-                    episodesContainer.insertAdjacentHTML('beforeend', html);
-                });
+                loadedEpisodes = data.episodes;
+                loadedError = false;
+                const lang = document.documentElement.lang === 'en' || document.querySelector('.lang-en')?.style.display !== 'none' ? 'en' : 'pt';
+                renderEpisodes(loadedEpisodes, lang);
             })
             .catch(() => {
-                episodesContainer.innerHTML = '<div style="color:var(--accent-color);">Não foi possível carregar os episódios.</div>';
+                loadedError = true;
+                renderEpisodes([], document.documentElement.lang === 'en' ? 'en' : 'pt');
+                episodesContainer.innerHTML = `<div style="color:var(--accent-color);">${document.documentElement.lang === 'en' ? 'Could not load episodes.' : 'Não foi possível carregar os episódios.'}</div>`;
             });
+    }
+
+    function updateEpisodesLang(lang) {
+        if (loadedEpisodes && episodesContainer) {
+            renderEpisodes(loadedEpisodes, lang);
+        } else if (loadedError && episodesContainer) {
+            episodesContainer.innerHTML = `<div style="color:var(--accent-color);">${lang === 'en' ? 'Could not load episodes.' : 'Não foi possível carregar os episódios.'}</div>`;
+        }
     }
 }); 
