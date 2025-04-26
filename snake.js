@@ -4,6 +4,7 @@
   const closeBtn = document.getElementById('snake-close');
   const controls = document.querySelectorAll('.snake-btn');
   const logo = document.querySelector('.logo');
+  const restartBtn = document.getElementById('snake-restart');
   let ctx, interval, snake, dir, food, score, gameOver, pendingDir;
   const size = 16, grid = 20;
 
@@ -38,6 +39,9 @@
       ctx.font = '16px sans-serif';
       ctx.fillText('Score: '+score, canvas.width/2, canvas.height/2+18);
       ctx.fillText('Press ESC or Close', canvas.width/2, canvas.height/2+38);
+      restartBtn.style.display = 'block';
+    } else {
+      restartBtn.style.display = 'none';
     }
   }
 
@@ -74,6 +78,19 @@
   }
 
   function openModal() {
+    // Responsive canvas size
+    if (window.innerWidth <= 600) {
+      const size = Math.min(window.innerWidth * 0.9, 400);
+      canvas.width = size;
+      canvas.height = size;
+      canvas.style.width = size + 'px';
+      canvas.style.height = size + 'px';
+    } else {
+      canvas.width = 320;
+      canvas.height = 320;
+      canvas.style.width = '';
+      canvas.style.height = '';
+    }
     modal.style.display = 'flex';
     document.body.classList.add('no-scrollbar');
     startGame();
@@ -134,4 +151,11 @@
       }
     });
   }
+
+  restartBtn.addEventListener('click', function() {
+    resetGame();
+    draw();
+    interval = setInterval(move, 110);
+    restartBtn.style.display = 'none';
+  });
 })(); 
