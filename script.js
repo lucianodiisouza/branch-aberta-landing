@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('load', () => {
         setTimeout(() => {
             loader.classList.add('hide');
+            document.body.classList.remove('no-scrollbar');
         }, 400);
     });
 
