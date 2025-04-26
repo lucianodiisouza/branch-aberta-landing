@@ -78,6 +78,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Fetch and display podcast episodes from serverless API
     const episodesContainer = document.getElementById('episodes-container');
+    function extractSpotifyId(guid, enclosureUrl) {
+        // Try to extract from guid (Spotify format: https://open.spotify.com/episode/{id})
+        if (guid && guid.includes('open.spotify.com/episode/')) {
+            const match = guid.match(/episode\/([a-zA-Z0-9]+)/);
+            if (match) return match[1];
+        }
+        // Try to extract from enclosureUrl (sometimes contains the id)
+        if (enclosureUrl && enclosureUrl.includes('anchor.fm/s/')) {
+            const match = enclosureUrl.match(/\/([a-zA-Z0-9]{22,})\./); // 22+ char Spotify IDs
+            if (match) return match[1];
+        }
+        return null;
+    }
     function renderEpisodes(episodes, lang) {
         episodesContainer.innerHTML = '';
         episodes.forEach((ep, idx) => {
@@ -86,6 +99,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const epNumLabel = lang === 'en' ? 'Episode' : 'Episódio';
             const dateLabel = lang === 'en' ? 'Published on' : 'Publicado em';
             const listenLabel = lang === 'en' ? 'Listen episode' : 'Ouvir episódio';
+            const spotifyId = extractSpotifyId(ep.guid, ep.enclosureUrl);
+            const playerHtml = spotifyId
+                ? `<div style="margin:0.7em 0 0.2em 0;"><iframe style="border-radius:12px" src="https://open.spotify.com/embed/episode/${spotifyId}" width="100%" height="80" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture"></iframe></div>`
+                : '';
             const html = `
                 <div class="episode-item">
                     <div class="episode-icon"><i class="fas fa-podcast"></i></div>
@@ -96,11 +113,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         </div>
                         <div class="episode-title">${ep.title}</div>
                         <div class="episode-desc">${desc}</div>
-                        <a class="episode-listen-btn" href="${ep.link}" target="_blank">
-                            <i class="fas fa-play"></i>
-                            ${listenLabel}
-                            <i class="fas fa-external-link-alt" style="font-size:0.9em;"></i>
-                        </a>
+                        ${playerHtml}
                     </div>
                 </div>
             `;
