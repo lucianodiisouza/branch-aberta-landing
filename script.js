@@ -38,19 +38,25 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         type();
     }
-    function showTypingForCurrentLang() {
+    function showTypingForCurrentLang(initial = false) {
         const typingText = document.getElementById('typing-text');
         const pt = typingText.querySelector('.lang-pt');
         const en = typingText.querySelector('.lang-en');
-        if (pt.style.display !== 'none') {
-            typeText(pt, 'Seu podcast sobre tecnologia e desenvolvimento');
-            en.textContent = 'Your podcast about technology and development';
+        if (initial) {
+            if (pt.style.display !== 'none') {
+                typeText(pt, 'Seu podcast sobre tecnologia e desenvolvimento');
+                en.textContent = 'Your podcast about technology and development';
+            } else {
+                typeText(en, 'Your podcast about technology and development');
+                pt.textContent = 'Seu podcast sobre tecnologia e desenvolvimento';
+            }
         } else {
-            typeText(en, 'Your podcast about technology and development');
+            // On language switch, just show/hide instantly
             pt.textContent = 'Seu podcast sobre tecnologia e desenvolvimento';
+            en.textContent = 'Your podcast about technology and development';
         }
     }
-    showTypingForCurrentLang();
+    showTypingForCurrentLang(true);
 
     // Language switch
     const langSwitch = document.getElementById('lang-switch');
@@ -62,7 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelectorAll('.lang-en').forEach(el => {
             el.style.display = isEnglish ? '' : 'none';
         });
-        showTypingForCurrentLang();
+        showTypingForCurrentLang(false);
         updateEpisodesLang(isEnglish ? 'en' : 'pt');
     });
 
