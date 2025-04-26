@@ -103,6 +103,13 @@ document.addEventListener('DOMContentLoaded', () => {
             const playerHtml = spotifyId
                 ? `<div style="margin:0.7em 0 0.2em 0;"><iframe style="border-radius:12px" src="https://open.spotify.com/embed/episode/${spotifyId}" width="100%" height="80" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture"></iframe></div>`
                 : '';
+            const fallbackBtn = !spotifyId
+                ? `<a class="episode-listen-btn" href="${ep.link}" target="_blank" rel="noopener">
+                    <i class="fas fa-play"></i>
+                    ${listenLabel}
+                    <i class="fas fa-external-link-alt" style="font-size:0.9em;"></i>
+                 </a>`
+                : '';
             const html = `
                 <div class="episode-item">
                     <div class="episode-icon"><i class="fas fa-podcast"></i></div>
@@ -114,6 +121,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <div class="episode-title">${ep.title}</div>
                         <div class="episode-desc">${desc}</div>
                         ${playerHtml}
+                        ${fallbackBtn}
                     </div>
                 </div>
             `;
