@@ -217,12 +217,14 @@ footer {
 
 .lang-switch-label .flag-br {
     opacity: 1;
+    transition: opacity 0.2s;
 }
 .lang-switch-input:checked + .lang-switch-label .flag-br {
-    opacity: 0.5;
+    opacity: 0;
 }
 .lang-switch-label .flag-us {
-    opacity: 0.5;
+    opacity: 0;
+    transition: opacity 0.2s;
 }
 .lang-switch-input:checked + .lang-switch-label .flag-us {
     opacity: 1;
