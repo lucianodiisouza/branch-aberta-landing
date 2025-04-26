@@ -119,7 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             <span class="episode-date"><i class="far fa-calendar-alt"></i> ${dateLabel}: ${date}</span>
                         </div>
                         <div class="episode-title">${ep.title}</div>
-                        <div class="episode-desc">${desc}</div>
+                        <div class="episode-desc">${desc}...</div>
                         ${playerHtml}
                         ${fallbackBtn}
                     </div>
