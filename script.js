@@ -163,6 +163,4 @@ document.addEventListener('DOMContentLoaded', () => {
             episodesContainer.innerHTML = `<div style="color:var(--accent-color);">${lang === 'en' ? 'Could not load episodes.' : 'Não foi possível carregar os episódios.'}</div>`;
         }
     }
-
-    // (Snake game code removed, now in snake.js)
 }); 

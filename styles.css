@@ -531,7 +531,9 @@ footer {
   margin-top: 0.2rem;
   transition: background 0.2s, transform 0.2s;
   box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  width: 250px;
 }
+
 .episode-listen-btn:hover {
   background: var(--accent-color-dark);
   transform: translateY(-2px) scale(1.04);
