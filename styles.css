@@ -576,10 +576,10 @@ footer {
     line-height: 1.25;
   }
   .episode-desc {
-    font-size: 0.97rem;
+    font-size: 0.675rem;
     color: var(--text-color);
     opacity: 0.85;
-    margin-bottom: 0.7rem;
+    margin-bottom: 1rem;
     margin-top: 0.1rem;
   }
   .episode-listen-btn {
