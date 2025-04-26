@@ -319,7 +319,22 @@
         </p>
       </footer>
     </div>
+    <div id="snake-modal" class="snake-modal" style="display:none;">
+      <div class="snake-modal-content">
+        <button id="snake-close" class="snake-close" aria-label="Fechar">&times;</button>
+        <canvas id="snake-canvas" width="320" height="320" tabindex="0"></canvas>
+        <div class="snake-controls">
+          <button class="snake-btn" data-dir="up" aria-label="Cima">&#8593;</button>
+          <div>
+            <button class="snake-btn" data-dir="left" aria-label="Esquerda">&#8592;</button>
+            <button class="snake-btn" data-dir="down" aria-label="Baixo">&#8595;</button>
+            <button class="snake-btn" data-dir="right" aria-label="Direita">&#8594;</button>
+          </div>
+        </div>
+      </div>
+    </div>
     <script src="script.js"></script>
+    <script src="snake.js"></script>
     <script defer src="https://vercel.com/analytics/script.js"></script>
   </body>
 </html>
