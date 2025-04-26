@@ -492,7 +492,6 @@ footer {
   color: var(--text-color);
   opacity: 0.85;
   margin-bottom: 0.2rem;
-  max-width: 600px;
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
