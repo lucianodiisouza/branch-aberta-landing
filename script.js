@@ -75,27 +75,21 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Fetch and display podcast episodes from RSS feed
+    // Fetch and display podcast episodes from serverless API
     const episodesContainer = document.getElementById('episodes-container');
     if (episodesContainer) {
-        fetch('https://api.allorigins.win/get?url=' + encodeURIComponent('https://anchor.fm/s/f64108b0/podcast/rss'))
+        fetch('/api/episodes')
             .then(res => res.json())
             .then(data => {
-                const parser = new window.DOMParser();
-                const xml = parser.parseFromString(data.contents, 'text/xml');
-                const items = Array.from(xml.querySelectorAll('item'));
+                if (!data.episodes) throw new Error();
                 episodesContainer.innerHTML = '';
-                items.forEach(item => {
-                    const title = item.querySelector('title')?.textContent || '';
-                    const link = item.querySelector('link')?.textContent || '';
-                    const pubDate = item.querySelector('pubDate')?.textContent || '';
-                    const date = pubDate ? new Date(pubDate).toLocaleDateString('pt-BR') : '';
-                    const description = item.querySelector('description')?.textContent || '';
+                data.episodes.forEach(ep => {
+                    const date = ep.pubDate ? new Date(ep.pubDate).toLocaleDateString('pt-BR') : '';
                     const html = `
                         <div class="episode-item">
-                            <div class="episode-title">${title}</div>
+                            <div class="episode-title">${ep.title}</div>
                             <div class="episode-date">${date}</div>
-                            <a class="episode-link" href="${link}" target="_blank">Ouvir episódio</a>
+                            <a class="episode-link" href="${ep.link}" target="_blank">Ouvir episódio</a>
                         </div>
                     `;
                     episodesContainer.insertAdjacentHTML('beforeend', html);
